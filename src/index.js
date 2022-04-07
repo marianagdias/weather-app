@@ -45,6 +45,78 @@ function changeTemperature(response) {
   document.querySelector("#wind").innerHTML = Math.round(
     response.data.wind.speed
   );
+  if (response.data.weather[0].description === "broken clouds") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/clouds.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "broken-clouds");
+  }
+  if (response.data.weather[0].description === "clear sky") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/sun.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "clear-sky");
+  }
+  if (response.data.weather[0].description === "few clouds") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/cloudy.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "few-clouds");
+  }
+  if (response.data.weather[0].description === "scattered clouds") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/clouds.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "scattered-clouds");
+  }
+  if (response.data.weather[0].description === "shower rain") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/rain2.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "shower-rain");
+  }
+  if (response.data.weather[0].description === "rain") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/rain.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "rain");
+  }
+  if (response.data.weather[0].description === "thunderstorm") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/storm.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "thunderstorm");
+  }
+  if (response.data.weather[0].description === "snow") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/snow.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "snow");
+  }
+  if (response.data.weather[0].description === "mist") {
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("src", "images/clouds.gif");
+    document
+      .querySelector(".current-temperature-img")
+      .setAttribute("alt", "mist");
+  }
 }
 
 function searchLocation(position) {
