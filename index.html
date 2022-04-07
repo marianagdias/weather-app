@@ -23,16 +23,18 @@
   <body>
     <div class="container">
       <br />
-      <form>
-        <input
-          class="form-control search-bar"
-          type="text"
-          placeholder="Enter city"
-          autofocus="on"
-        />
-        <input class="search-button" type="submit" value="Search" />
-      </form>
-      <button class="current-location">Current</button>
+      <div class="location-search">
+        <form>
+          <input
+            class="form-control search-bar"
+            type="text"
+            placeholder="Enter city"
+            autofocus="on"
+          />
+          <input class="search-button" type="submit" value="Search" />
+        </form>
+        <button class="current-location">Current</button>
+      </div>
       <br />
       <h1 id="city">Lisbon</h1>
       <h3>Friday 18:00</h3>
@@ -90,7 +92,7 @@
       <br />
       <br />
       <p class="footer">
-        <a href="https://github.com/marianagdias/weather-app"
+        <a href="https://github.com/marianagdias/weather-app" target="_blank"
           >Open-source code</a
         >
         by Mariana Galante Dias
