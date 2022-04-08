@@ -43,7 +43,11 @@
         src="images/rain.gif"
         alt="rain-gif"
       />
-      <h2>Currently <span id="temperature">--</span>º C</h2>
+      <h2>
+        Currently <span id="temperature"></span>º
+        <a href="#" class="active-link" id="celsius-link">C</a> /
+        <a href="#" id="fahrenheit-link">F</a>
+      </h2>
       <p class="detailed-weather">Humidity: <span id="humidity">--</span>%</p>
       <p class="detailed-weather">Wind: <span id="wind">-</span> km/h</p>
       <br />
@@ -90,13 +94,12 @@
         </div>
       </div>
       <br />
-      <br />
-      <p class="footer">
+      <small>
         <a href="https://github.com/marianagdias/weather-app" target="_blank"
           >Open-source code</a
         >
         by Mariana Galante Dias
-      </p>
+      </small>
     </div>
     <script src="src/index.js"></script>
   </body>

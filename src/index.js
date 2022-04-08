@@ -4,7 +4,7 @@ let days = [
   "Monday",
   "Tuesday",
   "Wednesday",
-  "Thurday",
+  "Thursday",
   "Friday",
   "Saturday",
 ];
@@ -31,7 +31,6 @@ function searchCity(event) {
 function changeCity(event) {
   event.preventDefault();
   let searchedCity = document.querySelector(".search-bar");
-  let cityName = document.querySelector("#city");
   let apiKey = "39a10a67974af3aca0cd78d46812daa1";
   let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity.value}&units=metric&appid=${apiKey}`;
   axios.get(url).then(changeTemperature);
@@ -129,7 +128,46 @@ function showCurrentPlace(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
+function defineCelsius(response) {
+  celsius = response.data.main.temp;
+  document.querySelector("#temperature").innerHTML = Math.round(
+    celsius * 1.8 + 32
+  );
+  document.querySelector("#fahrenheit-link").classList.add("active-link");
+  document.querySelector("#celsius-link").classList.remove("active-link");
+}
+
+function showFahrenheit(event) {
+  event.preventDefault();
+  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
+  let city = document.querySelector("#city");
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city.innerHTML}&units=metric&appid=${apiKey}`;
+  axios.get(url).then(defineCelsius);
+}
+
+function changeBackCelsius(response) {
+  document.querySelector("#temperature").innerHTML = Math.round(
+    response.data.main.temp
+  );
+  document.querySelector("#fahrenheit-link").classList.remove("active-link");
+  document.querySelector("#celsius-link").classList.add("active-link");
+}
+
+function showCelsius(event) {
+  event.preventDefault();
+  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
+  let city = document.querySelector("#city");
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city.innerHTML}&units=metric&appid=${apiKey}`;
+  axios.get(url).then(changeBackCelsius);
+}
+
+let celsius = null;
+
 let form = document.querySelector("form");
 form.addEventListener("submit", changeCity);
 searchCity("Lisbon");
 currentLocationButton.addEventListener("click", showCurrentPlace);
+document
+  .querySelector("#fahrenheit-link")
+  .addEventListener("click", showFahrenheit);
+document.querySelector("#celsius-link").addEventListener("click", showCelsius);
