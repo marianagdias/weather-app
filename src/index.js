@@ -28,26 +28,85 @@ function searchCity(event) {
   axios.get(url).then(changeTemperature);
 }
 
-function showForecast() {
-  let forecast = document.querySelector("#forecast");
-  let days = ["Today", "Tomorrow", "Monday", "Tuesday", "Wednesday"];
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  return days[day];
+}
+
+function formatIcon(icon) {
+  if (icon === "01d" || icon === "01n") {
+    return "sun";
+  }
+
+  if (icon === "02d" || icon === "02n") {
+    return "clouds";
+  }
+
+  if (icon === "03d" || icon === "03n" || icon === "04d" || icon === "04d") {
+    return "cloudy";
+  }
+
+  if (icon === "09d" || icon === "09n") {
+    return "rain2";
+  }
+
+  if (icon === "10d" || icon === "10n") {
+    return "rain";
+  }
+
+  if (icon === "11d" || icon === "11n") {
+    return "storm";
+  }
+
+  if (icon === "13d" || icon === "13n") {
+    return "snow";
+  }
+
+  if (icon === "50d" || icon === "50n") {
+    return "clouds";
+  }
+}
+
+function showForecast(response) {
+  let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#forecast");
   let forecastHTML = "";
-  days.forEach(function (day) {
-    forecastHTML += `<div class="col-sm">
-          <div><strong>${day}</strong></div> 
-          <img class="prevision-img" src="images/sun.gif" alt="sun-gif" /> 
-          <p class="temperature">13º / 16º</p> 
+  forecast.forEach(function (day, index) {
+    if (index < 5) {
+      forecastHTML += `<div class="col-sm">
+          <div><strong>${formatDay(day.dt)}</strong></div> 
+          <img class="prevision-img" src="images/${formatIcon(
+            day.weather[0].icon
+          )}.gif" alt="${day.weather[0].description}" /> 
+          <p class="temperature"><span id="forecast-max-temp">${Math.round(
+            day.temp.max
+          )}</span>º / <span id="forecast-min-temp">${Math.round(
+        day.temp.min
+      )}º</p> 
           </div>`;
+    }
   });
-  forecast.innerHTML = forecastHTML;
+  forecastHTML += "";
+  forecastElement.innerHTML = forecastHTML;
 }
 
 function setPosition(coordinates) {
   let latitude = coordinates.data.coord.lat;
   let longitude = coordinates.data.coord.lon;
   let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
-  axios.get(apiUrl).then(updateForecast);
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showForecast);
 }
 
 function changeCity(event) {
@@ -146,6 +205,7 @@ function searchLocation(position) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=${key}`;
   axios.get(apiUrl).then(changeTemperature);
   axios.get(apiUrl).then(setPosition);
+  axios.get(apiUrl).then(showForecast);
 }
 
 function showCurrentPlace(event) {
@@ -190,9 +250,13 @@ let celsius = null;
 let form = document.querySelector("form");
 form.addEventListener("submit", changeCity);
 searchCity("Lisbon");
+axios
+  .get(
+    "https://api.openweathermap.org/data/2.5/onecall?lat=38.71667&lon=-9.13333&exclude=current,minutely,hourly,alerts&appid=39a10a67974af3aca0cd78d46812daa1&units=metric"
+  )
+  .then(showForecast);
 currentLocationButton.addEventListener("click", showCurrentPlace);
 document
   .querySelector("#fahrenheit-link")
   .addEventListener("click", showFahrenheit);
 document.querySelector("#celsius-link").addEventListener("click", showCelsius);
-showForecast();
