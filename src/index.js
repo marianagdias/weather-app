@@ -206,6 +206,15 @@ function changeTemperature(response) {
   }
 }
 
+function updateShowForecast(response) {
+  units = "metric";
+  let latitude = response.data.coord.lat;
+  let longitude = response.data.coord.lon;
+  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(showForecast);
+}
+
 function searchLocation(position) {
   let key = "39a10a67974af3aca0cd78d46812daa1";
   units = "metric";
@@ -214,7 +223,7 @@ function searchLocation(position) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${units}&appid=${key}`;
   axios.get(apiUrl).then(changeTemperature);
   axios.get(apiUrl).then(setPosition);
-  axios.get(apiUrl).then(showForecast);
+  axios.get(apiUrl).then(updateShowForecast);
 }
 
 function showCurrentPlace() {
