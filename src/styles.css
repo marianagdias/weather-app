@@ -51,10 +51,10 @@ a:hover {
 
 .current-location {
   width: 75px;
-  background-color: #4ecfd2;
+  background-color: #fff;
   border-color: #4ecfd2;
   margin-top: 15px;
-  color: #fff;
+  color: #4ecfd2;
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   transition: all 300ms ease-in-out;
@@ -63,6 +63,7 @@ a:hover {
 .current-location:hover {
   background-color: #40a9aa;
   border-color: #40a9aa;
+  color: #fff;
   cursor: pointer;
 }
 
