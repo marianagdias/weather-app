@@ -50,7 +50,8 @@ a:hover {
 }
 
 .current-location {
-  width: 75px;
+  width: 40px;
+  margin-left: 5px;
   background-color: #fff;
   border-color: #4ecfd2;
   margin-top: 15px;

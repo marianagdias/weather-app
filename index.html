@@ -17,6 +17,10 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/fab419dc55.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="src/styles.css" />
     <title>Weather App</title>
   </head>
@@ -31,9 +35,14 @@
             placeholder="Enter city"
             autofocus="on"
           />
+          <div class="row d-flex justify-content-center">
           <input class="search-button" type="submit" value="Search" />
         </form>
-        <button class="current-location">Current</button>
+        
+        <button class="current-location">
+          <i class="fa-solid fa-location-dot"></i>
+        </button>
+        </div>
       </div>
       <br />
       <h1 id="city">Lisbon</h1>
