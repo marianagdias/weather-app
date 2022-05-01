@@ -1,3 +1,5 @@
+let apiKey = "39a10a67974af3aca0cd78d46812daa1";
+
 let now = new Date();
 let days = [
   "Sunday",
@@ -23,10 +25,10 @@ let searchedCity = document.querySelector(".search-bar");
 let currentLocationButton = document.querySelector(".current-location");
 
 let units = "metric";
+let city = "Lisbon";
 
-function searchCity(event) {
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${event}&units=${units}&appid=${apiKey}`;
+function searchCity(city) {
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`;
   axios.get(url).then(changeTemperature);
 }
 
@@ -95,7 +97,7 @@ function showForecast(response) {
             day.temp.max
           )}</span>º / <span id="forecast-min-temp">${Math.round(
         day.temp.min
-      )}º</p> 
+      )}</span>º</p> 
           </div>`;
     }
   });
@@ -106,20 +108,16 @@ function showForecast(response) {
 function setPosition(coordinates) {
   let latitude = coordinates.data.coord.lat;
   let longitude = coordinates.data.coord.lon;
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  units = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=${units}`;
   axios.get(apiUrl).then(showForecast);
 }
 
 function changeCity(event) {
   event.preventDefault();
-  units = "metric";
   document.querySelector("#fahrenheit-link").classList.remove("active-link");
   document.querySelector("#celsius-link").classList.add("active-link");
-  let searchedCity = document.querySelector(".search-bar");
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity.value}&units=${units}&appid=${apiKey}`;
+  let city = document.querySelector(".search-bar");
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&units=${units}&appid=${apiKey}`;
   axios.get(url).then(changeTemperature);
   axios.get(url).then(setPosition);
 }
@@ -207,7 +205,6 @@ function changeTemperature(response) {
 }
 
 function updateShowForecast(response) {
-  units = "metric";
   let latitude = response.data.coord.lat;
   let longitude = response.data.coord.lon;
   let apiKey = "39a10a67974af3aca0cd78d46812daa1";
@@ -216,11 +213,9 @@ function updateShowForecast(response) {
 }
 
 function searchLocation(position) {
-  let key = "39a10a67974af3aca0cd78d46812daa1";
-  units = "metric";
   document.querySelector("#fahrenheit-link").classList.remove("active-link");
   document.querySelector("#celsius-link").classList.add("active-link");
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${units}&appid=${key}`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${units}&appid=${apiKey}`;
   axios.get(apiUrl).then(changeTemperature);
   axios.get(apiUrl).then(setPosition);
   axios.get(apiUrl).then(updateShowForecast);
@@ -230,56 +225,52 @@ function showCurrentPlace() {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
-function defineFahrenheit(response) {
-  units = "imperial";
-  document.querySelector("#temperature").innerHTML = Math.round(
-    response.data.main.temp
-  );
-  document.querySelector("#fahrenheit-link").classList.add("active-link");
-  document.querySelector("#celsius-link").classList.remove("active-link");
-  let latitude = response.data.coord.lat;
-  let longitude = response.data.coord.lon;
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=${units}`;
-  axios.get(apiUrl).then(showForecast);
-}
-
 function showFahrenheit(event) {
   event.preventDefault();
-  units = "imperial";
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let city = document.querySelector("#city");
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city.innerHTML}&units=${units}&appid=${apiKey}`;
-  axios.get(url).then(defineFahrenheit);
-}
-
-function changeBackCelsius(response) {
-  document.querySelector("#temperature").innerHTML = Math.round(
-    response.data.main.temp
-  );
-  document.querySelector("#fahrenheit-link").classList.remove("active-link");
-  document.querySelector("#celsius-link").classList.add("active-link");
-  let latitude = response.data.coord.lat;
-  let longitude = response.data.coord.lon;
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=${units}`;
-  axios.get(apiUrl).then(showForecast);
+  if (units === "metric") {
+    units = "imperial";
+    city = document.querySelector("#city").innerHTML;
+    document.querySelector("#fahrenheit-link").classList.add("active-link");
+    document.querySelector("#celsius-link").classList.remove("active-link");
+    document.querySelector("#temperature").innerHTML = Math.round(
+      document.querySelector("#temperature").innerHTML * 1.8 + 32
+    );
+    let maxTemp = document.querySelectorAll("#forecast-max-temp");
+    let minTemp = document.querySelectorAll("#forecast-min-temp");
+    maxTemp.forEach(function (maxTemp) {
+      maxTemp.innerHTML = Math.round(maxTemp.innerHTML * 1.8 + 32);
+    });
+    minTemp.forEach(function (minTemp) {
+      minTemp.innerHTML = Math.round(minTemp.innerHTML * 1.8 + 32);
+    });
+  }
 }
 
 function showCelsius(event) {
   event.preventDefault();
-  units = "metric";
-  let apiKey = "39a10a67974af3aca0cd78d46812daa1";
-  let city = document.querySelector("#city");
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city.innerHTML}&units=${units}&appid=${apiKey}`;
-  axios.get(url).then(changeBackCelsius);
+  if (units === "imperial") {
+    units = "metric";
+    document.querySelector("#fahrenheit-link").classList.remove("active-link");
+    document.querySelector("#celsius-link").classList.add("active-link");
+    document.querySelector("#temperature").innerHTML = Math.round(
+      ((document.querySelector("#temperature").innerHTML - 32) * 5) / 9
+    );
+    let maxTemp = document.querySelectorAll("#forecast-max-temp");
+    let minTemp = document.querySelectorAll("#forecast-min-temp");
+    maxTemp.forEach(function (maxTemp) {
+      maxTemp.innerHTML = Math.round(((maxTemp.innerHTML - 32) * 5) / 9);
+    });
+    minTemp.forEach(function (minTemp) {
+      minTemp.innerHTML = Math.round(((minTemp.innerHTML - 32) * 5) / 9);
+    });
+  }
 }
 
 let celsius = null;
 
 let form = document.querySelector("form");
 form.addEventListener("submit", changeCity);
-searchCity("Lisbon");
+searchCity(city);
 axios
   .get(
     `https://api.openweathermap.org/data/2.5/onecall?lat=38.71667&lon=-9.13333&exclude=current,minutely,hourly,alerts&appid=39a10a67974af3aca0cd78d46812daa1&units=${units}`
